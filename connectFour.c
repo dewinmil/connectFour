@@ -30,18 +30,33 @@ int main(int argc, char** argv){
 	if(width == -1){
 	fprintf(stderr, "ERROR: Connect value is greater than board width or height\n");
 	}
+
+	//create empty board (0 is our non-value)
 	int** board = malloc(sizeof(int*) * width);
 	for(int index=0; index < width; index++){
 		board[index] = calloc(sizeof(int), height);
 	}
 
+	//load if tagged with -l filename
 	if(load != NULL){
 		board = loadGame(buffer, load);
 	}
 
+	//sets disp so that we will immediately display our board when loop begins
+	int disp =1;
+
+	//loop for user input, broken by user calls, victory, etc.
 	while(1){
-		display(board, width, height);
+
+		//check if we should display board
+		if(disp ==1){
+				display(board, width, height);
+		}
+		//set board to be displayed next loop
+		disp = 1;
+		fprintf(stderr, "Type help to learn more about how to play.\n");
 		fprintf(stderr, "Player %d:", player);
+
 
 		char* str = malloc(sizeof(char) * 80);
 
@@ -57,6 +72,30 @@ int main(int argc, char** argv){
 		if(strcmp(token, "exit") ==0){
 			break;
 		}
+
+		//print off help statement
+		if(strcmp(token, "help")==0){
+			display(board, width, height);
+			fprintf(stderr, "-Enter column number to play that column.\n");
+			fprintf(stderr, "-Columns are numbered starting from 0.\n");
+			fprintf(stderr, "-Save or load by typing save or load followed by a filename.\n");
+			fprintf(stderr, "-You can display the board at any time by typing display.\n");
+			fprintf(stderr, "-You can exit the game at any time by typing exit.\n\n");
+
+			//prevent new board from printing right after print statement
+			disp =0;
+			continue;
+		}
+
+		//dispaly board - only useful for when error messages push the board
+		//out of view.
+		if(strcmp(token, "display")==0){
+			display(board, width, height);
+			//prevents the board from re-printing immediately.
+			disp =0;
+			continue;
+		}
+
 		//check for save
 		if(strcmp(token, "save")==0){
 			//increment token
@@ -69,6 +108,7 @@ int main(int argc, char** argv){
 			}
 		}
 
+		//check for load
 		if(strcmp(token, "load")==0){
 			//increment token
 			token = strtok(NULL, "\n");
@@ -88,8 +128,13 @@ int main(int argc, char** argv){
 			}
 		}
 
+		//user input is not a number / also isn't a valid call as it would have
+		//been caught earlier
 		if(!tokenIsNumber){
-			fprintf(stderr, "Error: Invalid Input\n");
+			fprintf(stderr, "Error: Invalid Input\n\n");
+			disp = 0;
+
+		//user is a valid token, attempt to play a column
 		}else{
 			int tokenNumber = atoi(token);
 			results = playCol(board, width, height, tokenNumber, player);
@@ -147,11 +192,6 @@ int main(int argc, char** argv){
 		}
 
 	}
-
-
-
-
-
   return 0;
 
 }

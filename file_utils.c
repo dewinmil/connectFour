@@ -15,7 +15,17 @@
 int display(int ** board, int width, int height){
 	for(int index=0; index < height; index++){
 		for (int i= 0; i < width; i++){
-			printf("%d ", board[i][index]);
+			//player 1 is X
+			if(board[i][index] == 1){
+				printf("X");
+			//player 2 is O
+			}else if(board[i][index] == 2){
+				printf("O");
+			}else{
+				printf("*");
+			}
+			//space out board
+			printf(" ");
 		}
 		printf("\n");
 	}
@@ -25,6 +35,7 @@ int display(int ** board, int width, int height){
 //checks horizontal victory, returns 1 for victory
 int checkHor(int** board, int height, int rowNum, int connect, int player){
 	int count = 0;
+	//go through row and count consecutive plays by that player
 	for(int i=0; i < height; i++){
 		if(board[i][rowNum] == player){
 			count++;
@@ -42,6 +53,7 @@ int checkHor(int** board, int height, int rowNum, int connect, int player){
 //checks Vertical victory, returns 1 for victory
 int checkVert(int** board, int width, int colNum, int connect, int player){
 	int count = 0;
+	//go through column and count consecutive plays by player
 	for(int i=0; i < width; i++){
 		if(board[colNum][i] == player){
 			count++;
@@ -64,6 +76,9 @@ int checkDiagnalDown(int** board, int width, int height,
 	int startPosy = 0;
 	int startIndex = 0;
 	int max = 0;
+
+	//set offset to whichever is closer to the top or left edges
+	//set our starting x or y position. (one of these will remain 0)
 	if(colNum <= rowNum){
 		offset = colNum;
 		startPosy = rowNum - offset;
@@ -71,15 +86,21 @@ int checkDiagnalDown(int** board, int width, int height,
 		offset = rowNum;
 		startPosx = colNum - offset;
 	}
+	//find out how far we can loop
 	if((width-startPosx) < (height -startPosy)){
 		max = width;
 	}else{
 		max = height;
 	}
+
+	//loop along remaining width or height
 	for(int i=0; i < max - offset; i++){
+		//catch if we try to loop too far
 		if((startPosy + i) > (height - 1) || (startPosx + i) > (width - 1)){
 			break;
 		}
+
+		//count consecutive cells possessed by the player, return 1 for victory
 		if(board[startPosx + i][startPosy + i] == player){
 			count++;
 			if(count >= connect){
@@ -102,26 +123,34 @@ int checkDiagnalUp(int** board, int width, int height,
 	int startIndex = 0;
 	int max = 0;
 
-	//
+	//set offset to the sum of the rowNum and colNum, this is our starting y value
 	offset = rowNum + colNum;
 	startPosy = offset;
+
+	//if our starting y value is greater than the height of the board, then
+	//set the starting x value to the extra
 	if(offset > height - 1){
 		offset = offset - (height -1);
 		startPosx = offset;
 		startPosy = height-1;
 	}
+
+	//find out how far we can loop
 	if((width-startPosx) < (height -startPosy)){
 		max = width;
 	}else{
 		max = height;
 	}
 	for(int i=0; i < max - offset; i++){
+
+		//catch if we go out of bounds
 		if((startPosy + i) < 0 || (startPosx + i) > (width - 1)){
 			break;
 		}
+
+		//count consecutive cells possesed by player, return 1 for victory
 		if(board[startPosx + i][startPosy - i] == player){
 			count++;
-			fprintf(stderr, "Count: %d\n", count);
 			if(count >= connect){
 				return 1;
 			}
