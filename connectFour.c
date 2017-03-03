@@ -81,6 +81,11 @@ int main(int argc, char** argv){
 			fprintf(stderr, "-Save or load by typing save or load followed by a filename.\n");
 			fprintf(stderr, "-You can display the board at any time by typing display.\n");
 			fprintf(stderr, "-You can exit the game at any time by typing exit.\n\n");
+			fprintf(stderr, "\n-Displays up to 50 columns at a time, expanding ");
+			fprintf(stderr, "window is suggested.\n\n");
+			fprintf(stderr, "\n-Should you decide to use a very large gameboard\n ");
+			fprintf(stderr, "on your terminal go to Edit - Profile Preferences- Scrolling Tab\n");
+			fprintf(stderr, " and uncheck Limit Scrollback, or check Scrollback Unlimited\n\n");
 
 			//prevent new board from printing right after print statement
 			disp =0;

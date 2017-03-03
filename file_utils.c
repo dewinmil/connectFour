@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
+/*
 //displays the game board
 int display(int ** board, int width, int height){
 	for(int index=0; index < height; index++){
@@ -29,6 +29,80 @@ int display(int ** board, int width, int height){
 		}
 		printf("\n");
 	}
+	printf("\n\n");
+}
+*/
+
+//displays the game board - note that his function will display in batches of up
+//to 50 columns. Each 50 columns will be labeled with their line numbers below
+//for instance columns 0-49;
+int display(int ** board, int width, int height){
+	int over50 = 0;
+	int count = 0;
+	if(width > 50){
+		over50 = 1;
+	}
+
+	//if the width is less than 50 - will display entire board
+	if(over50 ==0){
+		for(int index=0; index < height; index++){
+			for (int i= 0; i < width; i++){
+				//player 1 is X
+				if(board[i][index] == 1){
+					printf("X");
+				//player 2 is O
+			}else if(board[i][index] == 2){
+					printf("O");
+				}else{
+					printf("*");
+				}
+				//space out board
+				printf(" ");
+			}
+			printf("\n");
+		}
+
+
+
+	//if the width is greater than 50 - will display board in batches of up to 50
+	//columns	with a label below each batch (columns 0-49, etc)
+	}else{
+
+		//continue until width is no longer greater than 50
+		while(over50 == 1){
+			for(int index=0; index < height; index++){
+				for (int i= 0; i < 50; i++){
+					//player 1 is X
+					if(board[count+i][index] == 1){
+						printf("X");
+					//player 2 is O
+				}else if(board[count+i][index] == 2){
+						printf("O");
+					}else{
+						printf("*");
+					}
+					//space out board
+					printf(" ");
+				}
+				//fprintf(stderr, "Its Here\n");
+				printf("\n");
+
+				//wrote out first 50 columns, create label & spacing
+				if(index == height-1){
+					printf("\n\n columns %d to %d", count, count + 49);
+					printf("\n\n");
+				}
+			}
+
+			//increment width count and over50
+			width -= 50;
+			count += 50;
+			if(width < 50){
+				over50 = 0;
+			}
+		}
+	}
+
 	printf("\n\n");
 }
 
