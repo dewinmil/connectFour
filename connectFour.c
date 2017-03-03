@@ -119,6 +119,7 @@ int main(int argc, char** argv){
 				continue;
 			}else{
 				fprintf(stderr, "Error: No Filename\n");
+        disp = 0;
 			}
 		}
 
@@ -151,6 +152,7 @@ int main(int argc, char** argv){
 				continue;
 			}else{
 				fprintf(stderr, "Error: No Filename\n");
+        disp =0;
 			}
 		}
 
@@ -171,15 +173,19 @@ int main(int argc, char** argv){
 		//user is a valid token, attempt to play a column
 		}else{
 			int tokenNumber = atoi(token);
+      fprintf(stderr, "Width: %d\n", width);
+      fprintf(stderr, "Height: %d\n", height);
 			results = playCol(board, width, height, tokenNumber, player);
 
 			//check if out of bounds
 			if(results[0] == -1){
 				fprintf(stderr, "Error: Exceeds Board Proportions\n");
+        disp =0;
 			}
 			//check if column is full
 			else if(results[0] == -2){
 				fprintf(stderr, "Error: Column Full\n");
+        disp = 0;
 			}
 			else {
 				//check horizontal victory

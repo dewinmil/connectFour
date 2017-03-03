@@ -23,30 +23,9 @@ int display(int ** board, int width, int height){
 		over50 = 1;
 	}
 
-	//if the width is less than 50 - will display entire board
-	if(over50 ==0){
-		for(int index=0; index < height; index++){
-			for (int i= 0; i < width; i++){
-				//player 1 is X
-				if(board[i][index] == 1){
-					printf("X");
-				//player 2 is O
-			}else if(board[i][index] == 2){
-					printf("O");
-				}else{
-					printf("*");
-				}
-				//space out board
-				printf(" ");
-			}
-			printf("\n");
-		}
-
-
-
 	//if the width is greater than 50 - will display board in batches of up to 50
 	//columns	with a label below each batch (columns 0-49, etc)
-	}else{
+	if(over50 ==1){
 
 		//continue until width is no longer greater than 50
 		while(over50 == 1){
@@ -69,7 +48,7 @@ int display(int ** board, int width, int height){
 
 				//wrote out first 50 columns, create label & spacing
 				if(index == height-1){
-					printf("\n\n columns %d to %d", count, count + 49);
+					printf("\n\ncolumns %d to %d", count, count + 49);
 					printf("\n\n");
 				}
 			}
@@ -83,6 +62,30 @@ int display(int ** board, int width, int height){
 		}
 	}
 
+	//if there are still some columns to print
+	if(width != 0){
+		for(int index=0; index < height; index++){
+			for (int i= 0; i < width; i++){
+				//player 1 is X
+				if(board[count + i][index] == 1){
+					printf("X");
+				//player 2 is O
+			}else if(board[count + i][index] == 2){
+					printf("O");
+				}else{
+					printf("*");
+				}
+				//space out board
+				printf(" ");
+			}
+			printf("\n");
+			//wrote out last of columns, create label & spacing
+			if(index == height-1){
+				printf("\n\ncolumns %d to %d", count, count + width -1);
+				printf("\n\n");
+			}
+		}
+	}
 	printf("\n\n");
 }
 
@@ -396,7 +399,7 @@ int * playCol(int** board, int width, int height, int colNum, int player){
 	int* results = malloc(sizeof(int) * 2);
 
 	//check if colNum is within the bounds of our board, set results to error -1
-	if(colNum > height -1 || colNum < 0)
+	if(colNum > width -1 || colNum < 0)
 	{
 		results[0] = -1;
 		results[1] = -1;
