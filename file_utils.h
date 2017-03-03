@@ -25,7 +25,7 @@ int write_file(char* filename, char *buffer, int size);
 int saveGame(int** board, int width, int height, int connect, int player,
    char* save);
 
-int loadGame(char* buffer, char* load);
+int** loadGame(char* buffer, char* load);
 
 //Changes lowest open position in column to player (the players number)
 int ** playCol(int** board, int width, int height, int colNum, int player);

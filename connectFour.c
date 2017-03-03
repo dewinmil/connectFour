@@ -36,7 +36,7 @@ int main(int argc, char** argv){
 	}
 
 	if(load != NULL){
-		loadGame(buffer, load);
+		board = loadGame(buffer, load);
 	}
 
 	while(1){
@@ -73,7 +73,7 @@ int main(int argc, char** argv){
 			//increment token
 			token = strtok(NULL, "\n");
 			if(token != NULL){
-				loadGame(buffer, token);
+				board = loadGame(buffer, token);
 				continue;
 			}else{
 				fprintf(stderr, "Error: No Filename\n");
@@ -104,7 +104,7 @@ int main(int argc, char** argv){
 			}
 			else {
 				//check horizontal victory
-				checkwin = checkHor(board, height, results[1], connect, 1);
+				checkwin = checkHor(board, height, results[1], connect, player);
 				if(checkwin ==1){
 					display(board, width, height);
 					fprintf(stderr, "Player %d Wins!\n", player);
@@ -112,7 +112,7 @@ int main(int argc, char** argv){
 				}
 
 				//check vertical victory
-				checkwin = checkVert(board, width, results[0], connect, 1);
+				checkwin = checkVert(board, width, results[0], connect, player);
 				if(checkwin ==1){
 					display(board, width, height);
 					fprintf(stderr, "Player %d Wins!\n", player);
@@ -121,7 +121,7 @@ int main(int argc, char** argv){
 
 				//check diagnal up victory
 				checkwin = checkDiagnalUp(board, width, height, results[0],
-					results[1], connect, 1);
+					results[1], connect, player);
 					if(checkwin ==1){
 						display(board, width, height);
 						fprintf(stderr, "Player %d Wins!\n", player);
@@ -130,7 +130,7 @@ int main(int argc, char** argv){
 
 				//check diagnal down victory
 				checkwin = checkDiagnalDown(board, width, height, results[0],
-					results[1], connect, 1);
+					results[1], connect, player);
 					if(checkwin ==1){
 						display(board, width, height);
 						fprintf(stderr, "Player %d Wins!\n", player);

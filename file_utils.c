@@ -101,12 +101,14 @@ int checkDiagnalUp(int** board, int width, int height,
 	int startPosy = 0;
 	int startIndex = 0;
 	int max = 0;
+
+	//
 	offset = rowNum + colNum;
 	startPosy = offset;
 	if(offset > height - 1){
 		offset = offset - (height -1);
 		startPosx = offset;
-		startPosy = startPosy - (colNum - offset);
+		startPosy = height-1;
 	}
 	if((width-startPosx) < (height -startPosy)){
 		max = width;
@@ -119,6 +121,7 @@ int checkDiagnalUp(int** board, int width, int height,
 		}
 		if(board[startPosx + i][startPosy - i] == player){
 			count++;
+			fprintf(stderr, "Count: %d\n", count);
 			if(count >= connect){
 				return 1;
 			}
@@ -220,7 +223,7 @@ int saveGame(int** board, int width, int height, int connect, int player,
 }
 
 
-int loadGame(char* buffer, char* load){
+int** loadGame(char* buffer, char* load){
 		int width;
 		int height;
 		int connect;
@@ -280,7 +283,7 @@ int loadGame(char* buffer, char* load){
 			}
 			count2++;
 		}
-		display(board, width, height);
+		return board;
 }
 
 
