@@ -282,3 +282,44 @@ int loadGame(char* buffer, char* load){
 		}
 		display(board, width, height);
 }
+
+
+int * playCol(int** board, int width, int height, int colNum, int player){
+	int* results = malloc(sizeof(int) * 2);
+
+	//check if colNum is within the bounds of our board, set results to error -1
+	if(colNum > height -1 || colNum < 0)
+	{
+		results[0] = -1;
+		results[1] = -1;
+		return results;
+	}
+
+	for(int i=0; i < height; i++){
+		if(board[colNum][i+1] != 0){
+
+			//if the entire column is full set results to error -2
+			if(board[colNum][i] != 0){
+				results[0] = -2;
+				results[1] = -2;
+				break;
+			}
+
+			//set lowest open slot in column to player
+			board[colNum][i] = player;
+			results[0] = colNum;
+			results[1] = i;
+			break;
+		}
+
+		//if the entire column was empty / 0's set last slot to player
+		if((i+1) == height && board[colNum][i] == 0){
+			board[colNum][i] = player;
+			results[0] = colNum;
+			results[1] = i;
+			break;
+		}
+	}
+
+	return results;
+}

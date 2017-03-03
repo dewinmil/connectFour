@@ -27,4 +27,7 @@ int saveGame(int** board, int width, int height, int connect, int player,
 
 int loadGame(char* buffer, char* load);
 
+//Changes lowest open position in column to player (the players number)
+int ** playCol(int** board, int width, int height, int colNum, int player);
+
 #endif
