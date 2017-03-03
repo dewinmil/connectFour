@@ -198,7 +198,7 @@ int checkDiagnalUp(int** board, int width, int height,
 	}else{
 		max = height;
 	}
-	for(int i=0; i < max - offset; i++){
+	for(int i=0; i < max; i++){
 
 		//catch if we go out of bounds
 		if((startPosy + i) < 0 || (startPosx + i) > (width - 1)){
