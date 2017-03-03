@@ -1,4 +1,4 @@
 make: arguments.c file_utils.c connectFour.c
-		gcc -c arguments.c
-		gcc -c file_utils.c
-		gcc connectFour.c arguments.o file_utils.o
+		gcc -std=c99 -c arguments.c
+		gcc -std=c99 -c file_utils.c
+		gcc -std=c99 connectFour.c arguments.o file_utils.o
