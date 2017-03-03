@@ -10,28 +10,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-/*
-//displays the game board
-int display(int ** board, int width, int height){
-	for(int index=0; index < height; index++){
-		for (int i= 0; i < width; i++){
-			//player 1 is X
-			if(board[i][index] == 1){
-				printf("X");
-			//player 2 is O
-			}else if(board[i][index] == 2){
-				printf("O");
-			}else{
-				printf("*");
-			}
-			//space out board
-			printf(" ");
-		}
-		printf("\n");
-	}
-	printf("\n\n");
-}
-*/
+#include <string.h>
+#include "connectFour.h"
 
 //displays the game board - note that his function will display in batches of up
 //to 50 columns. Each 50 columns will be labeled with their line numbers below
@@ -239,20 +219,21 @@ int get_fileSize(char*);
 
 int read_file(char* filename, char**buffer){
   //find size of file & create buffer
-  struct stat st;
+	struct stat st;
   stat(filename, &st);
   int size = st.st_size;
+
   *buffer = malloc(size*sizeof(char));
 
   //create run through file and save to buffer
   FILE* fp;
   fp = fopen(filename, "r");
   fread(*buffer, size, 1, fp);
-
   fclose(fp);
   return(size);
 
 }
+
 
 int write_file(char* filename, char* buffer, int size){
 
@@ -267,7 +248,6 @@ int write_file(char* filename, char* buffer, int size){
   fclose(fp);
   return 0;
 }
-
 
 int saveGame(int** board, int width, int height, int connect, int player,
 	 char* save){
@@ -321,22 +301,36 @@ int saveGame(int** board, int width, int height, int connect, int player,
 		}
 	}
 
-	write_file(save, buffer, size);
+	//add the name of the file to save to saveFile filepath
+	char* str1;
+  str1 = "saveFile/";
+  char * str2 = (char *) malloc(1 + strlen(str1)+ strlen(save) );
+  strcpy(str2, str1);
+  strcat(str2, save);
+	write_file(str2, buffer, size);
 	free(buffer);
 }
 
 
-int** loadGame(char* buffer, char* load){
+struct loadingStruct loadGame(char* buffer, char* load){
 		int width;
 		int height;
 		int connect;
 		int player;
+		int size = 0;
 		int count = 0;
 		int count2 = 0;
-		int size;
+		struct loadingStruct loadingStruct;
 
-		//read file into buffer
-		size = read_file(load, &buffer);
+		//add name of file to load to saveFile file path
+		char* str1;
+	  str1 = "saveFile/";
+	  char * str2 = (char *) malloc(1 + strlen(str1)+ strlen(load));
+	  strcpy(str2, str1);
+	  strcat(str2, load);
+
+		//read save file into buffer
+		size = read_file(str2, &buffer);
 
 		//count w's to find width
 		while(buffer[count] == 'w'){
@@ -369,6 +363,12 @@ int** loadGame(char* buffer, char* load){
 		player = buffer[count] - '0';
 		count = count+2;
 
+		//place values into loadingStruct so they can be returned at the end
+		loadingStruct.width = width;
+		loadingStruct.height = height;
+		loadingStruct.connect = connect;
+		loadingStruct.player = player;
+
 		//create the board / filled with 0's
 		int** board = malloc(sizeof(int*) * width);
 	 	for(int index=0; index < width; index++){
@@ -386,7 +386,9 @@ int** loadGame(char* buffer, char* load){
 			}
 			count2++;
 		}
-		return board;
+
+		loadingStruct.board = board;
+		return loadingStruct;
 }
 
 

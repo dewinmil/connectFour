@@ -2,12 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <sys/stat.h>
 #include "arguments.h"
 #include "file_utils.h"
+#include "connectFour.h"
 /**
  * Created by Miles De Wind - -2/26/2017
  * Creates a game of connect four.
  */
+
+ struct loadingStruct loadingStruct;
 
 int main(int argc, char** argv){
 	int width;
@@ -20,6 +24,7 @@ int main(int argc, char** argv){
 	char* load;
 	char* buffer;
 	int* results = malloc(sizeof(int) * 2);
+	struct loadingStruct loadingStruct;
 	values = setup(argc, argv);
 	width = values.first;
 	height = values.second;
@@ -38,7 +43,12 @@ int main(int argc, char** argv){
 
 	//load if tagged with -l filename
 	if(load != NULL){
-		board = loadGame(buffer, load);
+		loadingStruct = loadGame(buffer, load);
+		width = loadingStruct.width;
+		height = loadingStruct.height;
+		connect = loadingStruct.connect;
+		player = loadingStruct.player;
+		board = loadingStruct.board;
 	}
 
 	//sets disp so that we will immediately display our board when loop begins
@@ -117,7 +127,27 @@ int main(int argc, char** argv){
 			//increment token
 			token = strtok(NULL, "\n");
 			if(token != NULL){
-				board = loadGame(buffer, token);
+
+				char* str1;
+			  str1 = "saveFile/";
+			  char * str2 = (char *) malloc(1 + strlen(str1)+ strlen(token));
+			  strcpy(str2, str1);
+			  strcat(str2, token);
+
+				struct stat st;
+			  stat(str2, &st);
+			  int size = st.st_size;
+				if(size == 0){
+					fprintf(stderr, "Error: Invalid Save File\n");
+					disp = 0;
+					continue;
+				}
+				loadingStruct = loadGame(buffer, token);
+				width = loadingStruct.width;
+				height = loadingStruct.height;
+				connect = loadingStruct.connect;
+				player = loadingStruct.player;
+				board = loadingStruct.board;
 				continue;
 			}else{
 				fprintf(stderr, "Error: No Filename\n");
