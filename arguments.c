@@ -88,7 +88,6 @@ struct arguments setup(int argc, char** argv){
 	  height = -1;
 	  connect = -1;
 	}
-	printf("width: %d\nHeight: %d\nConnect: %d\n\n", width, height, connect);
 	if(arguments.load_file != NULL){
 		printf("load file: %s\n\n", arguments.load_file);
 	}

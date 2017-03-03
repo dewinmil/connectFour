@@ -54,6 +54,8 @@ int main(int argc, char** argv){
 	//sets disp so that we will immediately display our board when loop begins
 	int disp =1;
 
+  //just to give space between calling the function and printing the board
+  printf("\n");
 	//loop for user input, broken by user calls, victory, etc.
 	while(1){
 
@@ -173,8 +175,6 @@ int main(int argc, char** argv){
 		//user is a valid token, attempt to play a column
 		}else{
 			int tokenNumber = atoi(token);
-      fprintf(stderr, "Width: %d\n", width);
-      fprintf(stderr, "Height: %d\n", height);
 			results = playCol(board, width, height, tokenNumber, player);
 
 			//check if out of bounds
