@@ -24,7 +24,6 @@ int main(int argc, char** argv){
 	width = values.first;
 	height = values.second;
 	connect = values.third;
-	save = values.save_file;
 	load = values.load_file;
 
 	if(width == -1){

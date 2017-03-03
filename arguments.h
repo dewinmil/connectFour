@@ -11,7 +11,6 @@ struct arguments {
 	int second;
 	int third;
 	char *load_file;
-	char *save_file;
 };
 
 // Function to setup values once they are parsed.

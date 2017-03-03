@@ -24,7 +24,6 @@ struct argp_option options[] = {
 	{"connect",	'c',	"CONNECT",	0,	"Sets the number of connected peices required to win, default 4." },
 	{"both",	'b',	"BOTH",		0,	"Sets both the height and width of the board. If called with width or height, the last call takes precidence." },
 	{"load",	'l',	"LOAD", 	0, 	"Load saved game state" },
-	{"save",	's',	"SAVE",		0,	"Save current game state" },
 	{ 0 }
 };
 
@@ -57,9 +56,6 @@ error_t parse_opt(int key, char* arg, struct argp_state *state){
 		case 'l':
 			arguments->load_file = arg;
 			break;
-			case 's':
-				arguments->save_file = arg;
-				break;
 		default:
 			return ARGP_ERR_UNKNOWN;
 	}
@@ -74,7 +70,6 @@ struct arguments setup(int argc, char** argv){
 	int height = 7;
         int connect = 4;
 	char* load_file = NULL;
-	char* save;
 	// Call argp to do its thing.
 	argp_parse(&argp, argc, argv, 0, 0, &arguments);
 	// Return values are in the arguments struct.  Pull
