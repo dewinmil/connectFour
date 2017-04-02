@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <fcntl.h>
 #include <string.h>
 #include "connectFour.h"
@@ -151,7 +152,7 @@ int checkDiagnalDown(int** board, int width, int height,
 	}
 
 	//loop along remaining width or height
-	for(int i=0; i < max - offset; i++){
+	for(int i=0; i < max; i++){
 		//catch if we try to loop too far
 		if((startPosy + i) > (height - 1) || (startPosx + i) > (width - 1)){
 			break;
@@ -239,9 +240,14 @@ int read_file(char* filename, char**buffer){
 
 
 int write_file(char* filename, char* buffer, int size){
+  struct stat st = {0};
+
+  if (stat("saveFile/", &st) == -1){
+    mkdir("saveFile/", 0700);
+  }
 
   //create / open new file
-  FILE* fp = fopen(filename, "w");
+  FILE* fp = fopen(filename, "w+");
 
   //loop down from end of buffer & write to file
   for(int i = 0; i < size; i++){
